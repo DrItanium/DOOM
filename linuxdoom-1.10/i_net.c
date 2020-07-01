@@ -27,13 +27,17 @@ rcsid[] = "$Id: m_bbox.c,v 1.1 1997/02/03 22:45:10 b1 Exp $";
 #include <string.h>
 #include <stdio.h>
 
+#ifndef BARE_METAL
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#endif
 #include <errno.h>
 #include <unistd.h>
+#ifndef BARE_METAL
 #include <netdb.h>
 #include <sys/ioctl.h>
+#endif
 
 #include "i_system.h"
 #include "d_event.h"
@@ -72,12 +76,17 @@ boolean NetListen (void);
 //
 // NETWORKING
 //
-
-int	DOOMPORT =	(IPPORT_USERRESERVED +0x1d );
+int DOOMPORT = 
+#ifndef BARE_METAL
+(IPPORT_USERRESERVED +0x1d )
+#else 
+0
+#endif
+;
 
 int			sendsocket;
 int			insocket;
-
+#ifndef BARE_METAL
 struct	sockaddr_in	sendaddress[MAXNETNODES];
 
 void	(*netget) (void);
@@ -236,6 +245,7 @@ int GetLocalAddress (void)
 		
     return *(int *)hostentry->h_addr_list[0];
 }
+#endif
 
 
 //
@@ -243,6 +253,7 @@ int GetLocalAddress (void)
 //
 void I_InitNetwork (void)
 {
+#ifndef BARE_METAL
     boolean		trueval = true;
     int			i;
     int			p;
@@ -329,11 +340,13 @@ void I_InitNetwork (void)
     ioctl (insocket, FIONBIO, &trueval);
 
     sendsocket = UDPsocket ();
+#endif
 }
 
 
 void I_NetCmd (void)
 {
+#ifndef BARE_METAL
     if (doomcom->command == CMD_SEND)
     {
 	netsend ();
@@ -344,5 +357,6 @@ void I_NetCmd (void)
     }
     else
 	I_Error ("Bad net cmd: %i\n",doomcom->command);
+#endif
 }
 
