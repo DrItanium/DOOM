@@ -26,6 +26,7 @@ rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 
 #include <stdlib.h>
 #include <unistd.h>
+#ifndef BARE_METAL
 #include <sys/ipc.h>
 #include <sys/shm.h>
 
@@ -39,14 +40,17 @@ rcsid[] = "$Id: i_x.c,v 1.6 1997/02/03 22:45:10 b1 Exp $";
 #ifdef LINUX
 int XShmGetEventBase( Display* dpy ); // problems with g++?
 #endif
+#endif  // end BARE_METAL
 
 #include <stdarg.h>
 #include <sys/time.h>
 #include <sys/types.h>
+#ifndef BARE_METAL
 #include <sys/socket.h>
 
 #include <netinet/in.h>
-#include <errnos.h>
+#endif // end BARE_METAL
+#include <errno.h>
 #include <signal.h>
 
 #include "doomstat.h"
