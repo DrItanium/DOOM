@@ -7,12 +7,13 @@
 CC=  i960-elf-gcc  # gcc or g++
 
 #CFLAGS=-g -Wall -DNORMALUNIX -DLINUX # -DUSEASM 
-CFLAGS=-g -Wall -DBARE_METAL# -DUSEASM 
+CFLAGS=-g -Wall -DNORMALUNIX -DBARE_METAL# -DUSEASM 
 LDFLAGS=-L/usr/X11R6/lib
-LIBS=-lXext -lX11 -lnsl -lm
+#LIBS=-lXext -lX11 -lnsl -lm
+LIBS=
 
 # subdirectory for objects
-O=linux
+O=i960
 
 # not too sophisticated dependency
 OBJS=				\
