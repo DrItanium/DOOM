@@ -62,7 +62,7 @@ int XShmGetEventBase( Display* dpy ); // problems with g++?
 #include "doomdef.h"
 
 #define POINTER_WARP_COUNTDOWN	1
-
+#if 0
 Display*	X_display=0;
 Window		X_mainWindow;
 Colormap	X_cmap;
@@ -164,9 +164,11 @@ int xlatekey(void)
     return rc;
 
 }
+#endif
 
 void I_ShutdownGraphics(void)
 {
+#ifndef BARE_METAL
   // Detach from X server
   if (!XShmDetach(X_display, &X_shminfo))
 	    I_Error("XShmDetach() failed in I_ShutdownGraphics()");
@@ -177,6 +179,7 @@ void I_ShutdownGraphics(void)
 
   // Paranoia.
   image->data = NULL;
+#endif
 }
 
 
@@ -198,6 +201,7 @@ boolean		shmFinished;
 void I_GetEvent(void)
 {
 
+#ifndef BARE_METAL
     event_t event;
 
     // put event-grabbing stuff in here
@@ -279,9 +283,10 @@ void I_GetEvent(void)
 	if (doShm && X_event.type == X_shmeventtype) shmFinished = true;
 	break;
     }
-
+    #endif
 }
 
+#ifndef BARE_METAL
 Cursor
 createnullcursor
 ( Display*	display,
@@ -306,6 +311,7 @@ createnullcursor
     XFreeGC(display,gc);
     return cursor;
 }
+#endif
 
 //
 // I_StartTic
@@ -313,6 +319,7 @@ createnullcursor
 void I_StartTic (void)
 {
 
+#ifndef BARE_METAL
     if (!X_display)
 	return;
 
@@ -338,7 +345,7 @@ void I_StartTic (void)
     }
 
     mousemoved = false;
-
+#endif
 }
 
 
@@ -356,6 +363,7 @@ void I_UpdateNoBlit (void)
 void I_FinishUpdate (void)
 {
 
+#ifndef BARE_METAL
     static int	lasttic;
     int		tics;
     int		i;
@@ -521,7 +529,7 @@ void I_FinishUpdate (void)
 	XSync(X_display, False);
 
     }
-
+#endif
 }
 
 
@@ -537,11 +545,11 @@ void I_ReadScreen (byte* scr)
 //
 // Palette stuff.
 //
+#ifndef BARE_METAL
 static XColor	colors[256];
 
 void UploadNewPalette(Colormap cmap, byte *palette)
 {
-
     register int	i;
     register int	c;
     static boolean	firstcall = true;
@@ -579,16 +587,20 @@ void UploadNewPalette(Colormap cmap, byte *palette)
 
 	}
 }
+#endif
 
 //
 // I_SetPalette
 //
 void I_SetPalette (byte* palette)
 {
+#ifndef BARE_METAL
     UploadNewPalette(X_cmap, palette);
+#endif
 }
 
 
+#ifndef BARE_METAL
 //
 // This function is probably redundant,
 //  if XShmDetach works properly.
@@ -692,9 +704,11 @@ void grabsharedmemory(int size)
   fprintf(stderr, "shared memory id=%d, addr=0x%x\n", id,
 	  (int) (image->data));
 }
+#endif
 
 void I_InitGraphics(void)
 {
+#ifndef BARE_METAL
 
     char*		displayname;
     char*		d;
@@ -915,7 +929,7 @@ void I_InitGraphics(void)
 	screens[0] = (unsigned char *) (image->data);
     else
 	screens[0] = (unsigned char *) malloc (SCREENWIDTH * SCREENHEIGHT);
-
+#endif
 }
 
 
