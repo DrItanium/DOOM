@@ -40,6 +40,8 @@ typedef unsigned char byte;
 // Predefined with some OS.
 #ifdef LINUX
 #include <values.h>
+#elif defined(BARE_METAL)
+#include <values.h> // it's a dup but at this point i don't care
 #else
 #define MAXCHAR		((char)0x7f)
 #define MAXSHORT	((short)0x7fff)
