@@ -39,14 +39,6 @@ static const char rcsid[] = "$Id: d_main.c,v 1.8 1997/02/03 22:45:09 b1 Exp $";
 #include <sys/stat.h>
 #include <fcntl.h>
 #endif
-#ifdef BARE_METAL
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#endif
 
 
 #include "doomdef.h"
@@ -882,12 +874,14 @@ void D_DoomMain (void)
     if (devparm)
 	printf(D_DEVSTR);
     
+#ifndef BARE_METAL
     if (M_CheckParm("-cdrom"))
     {
 	printf(D_CDROM);
 	mkdir("c:\\doomdata",0);
 	strcpy (basedefault,"c:/doomdata/default.cfg");
     }	
+#endif
     
     // turbo option
     if ( (p=M_CheckParm ("-turbo")) )
