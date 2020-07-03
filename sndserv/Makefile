@@ -6,18 +6,19 @@
 #
 #
 
-CC=gcc
-CFLAGS=-O -DNORMALUNIX -DLINUX
+CC=i960-elf-gcc
+#CFLAGS=-O -DNORMALUNIX -DLINUX
+CFLAGS=-O -DNORMALUNIX -DBARE_METAL
 LDFLAGS=
 LIBS=-lm
 
-O=linux
+O=i960
 
 all:	 $(O)/sndserver
 
 clean:
 	rm -f *.o *~ *.flc
-	rm -f linux/*
+	rm -f i960/*
 
 # Target
 $(O)/sndserver: \
@@ -29,7 +30,7 @@ $(O)/sndserver: \
 	$(O)/soundsrv.o \
 	$(O)/sounds.o \
 	$(O)/wadread.o \
-	$(O)/linux.o -o $(O)/sndserver $(LIBS)
+	$(O)/impl.o -o $(O)/sndserver $(LIBS)
 	echo make complete.
 
 # Rule
