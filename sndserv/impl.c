@@ -39,13 +39,14 @@ static const char rcsid[] = "$Id: linux.c,v 1.3 1997/01/26 07:45:01 b1 Exp $";
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
-
+#ifdef LINUX
 #include <linux/soundcard.h>
+#endif
 
 #include "soundsrv.h"
 
 int	audio_fd;
-
+#ifdef LINUX
 void
 myioctl
 ( int	fd,
@@ -63,6 +64,7 @@ myioctl
 	exit(-1);
     }
 }
+#endif
 
 void I_InitMusic(void)
 {
@@ -73,7 +75,7 @@ I_InitSound
 ( int	samplerate,
   int	samplesize )
 {
-
+#ifdef LINUX
     int i;
                 
     audio_fd = open("/dev/dsp", O_WRONLY);
@@ -95,7 +97,7 @@ I_InitSound
         myioctl(audio_fd, SNDCTL_DSP_SETFMT, &i);
     else
         fprintf(stderr, "Could not play signed 16 data\n");
-
+#endif
 }
 
 void
@@ -103,14 +105,16 @@ I_SubmitOutputBuffer
 ( void*	samples,
   int	samplecount )
 {
+#ifdef LINUX
     write(audio_fd, samples, samplecount*4);
+#endif
 }
 
 void I_ShutdownSound(void)
 {
-
+#ifdef LINUX
     close(audio_fd);
-
+#endif
 }
 
 void I_ShutdownMusic(void)

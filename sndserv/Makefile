@@ -8,9 +8,9 @@
 
 CC=i960-elf-gcc
 #CFLAGS=-O -DNORMALUNIX -DLINUX
-CFLAGS=-O -DNORMALUNIX -DBARE_METAL
-LDFLAGS=
-LIBS=-lm
+CFLAGS=-O -DNORMALUNIX -DBARE_METAL -msb -mnumerics
+LDFLAGS=-msb -mnumerics --as-needed
+LIBS=-lm -lc -lnosys
 
 O=i960
 
@@ -25,7 +25,7 @@ $(O)/sndserver: \
 	$(O)/soundsrv.o \
 	$(O)/sounds.o \
 	$(O)/wadread.o \
-	$(O)/linux.o
+	$(O)/impl.o
 	$(CC) $(CFLAGS) $(LDFLAGS) \
 	$(O)/soundsrv.o \
 	$(O)/sounds.o \

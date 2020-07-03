@@ -130,12 +130,13 @@ static void derror(char* msg)
     exit(-1);
 }
 
-
+#if 0
 void strupr (char *s)
 {
     while (*s)
 	*s++ = toupper(*s);
 }
+#endif
 
 int filelength (int handle)
 {
