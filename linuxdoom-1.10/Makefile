@@ -7,7 +7,8 @@
 CC=  i960-elf-gcc  # gcc or g++
 
 #CFLAGS=-g -Wall -DNORMALUNIX -DLINUX # -DUSEASM 
-CFLAGS=-g -Wall -DNORMALUNIX -DBARE_METAL -msb -mnumerics # -DUSEASM 
+#CFLAGS=-g -Wall -DNORMALUNIX -DBARE_METAL -msb -mnumerics # -DUSEASM 
+CFLAGS=-Wall -DNORMALUNIX -DBARE_METAL -msb -mnumerics # -DUSEASM 
 #LDFLAGS=-L/usr/X11R6/lib
 LDFLAGS=-v -msb -mnumerics --as-needed
 #LIBS=-lXext -lX11 -lnsl -lm
